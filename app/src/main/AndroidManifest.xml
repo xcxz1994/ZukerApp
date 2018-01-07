@@ -24,6 +24,9 @@
         <activity
             android:name="com.example.chuny.zuker.Resetpwd"
             android:label="密码修改" />
+        <activity
+            android:name="com.example.chuny.zuker.MainActivity"
+            android:label="租客校园" />
     </application>
 
 </manifest>
