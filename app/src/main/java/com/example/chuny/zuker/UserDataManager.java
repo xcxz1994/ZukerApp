@@ -134,7 +134,7 @@ public class UserDataManager {             //用户数据管理类
     public int findUserByName(String userName){
         Log.i(TAG,"findUserByName , userName="+userName);
         int result=0;
-        Cursor mCursor=mSQLiteDatabase.query(TABLE_NAME, null, USER_NAME+"="+userName, null, null, null, null);
+        Cursor mCursor=mSQLiteDatabase.query(TABLE_NAME, null, USER_NAME+"='"+userName+"'", null, null, null, null);
         if(mCursor!=null){
             result=mCursor.getCount();
             mCursor.close();
@@ -146,7 +146,7 @@ public class UserDataManager {             //用户数据管理类
     public int findUserByNameAndPwd(String userName,String pwd){
         Log.i(TAG,"findUserByNameAndPwd");
         int result=0;
-        Cursor mCursor=mSQLiteDatabase.query(TABLE_NAME, null, USER_NAME+"="+userName+" and "+USER_PWD+"="+pwd,
+        Cursor mCursor=mSQLiteDatabase.query(TABLE_NAME, null, USER_NAME+"='"+userName+"'"+" and "+USER_PWD+"='"+pwd+"'",
                 null, null, null, null);
         if(mCursor!=null){
             result=mCursor.getCount();
