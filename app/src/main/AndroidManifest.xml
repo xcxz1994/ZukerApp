@@ -26,6 +26,9 @@
             android:label="密码修改" />
         <activity
             android:name="com.example.chuny.zuker.MainActivity"
+            android:label="主页面" />
+        <activity
+            android:name="com.example.chuny.zuker.School"
             android:label="租客校园" />
     </application>
 

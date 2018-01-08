@@ -1,7 +1,12 @@
 package com.example.chuny.zuker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
@@ -11,8 +16,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 public class MainActivity extends Activity implements
         android.view.View.OnClickListener {
@@ -31,6 +43,8 @@ public class MainActivity extends Activity implements
     private ImageButton mOnlineImg;
     private ImageButton mMyImg;
 
+    private Button mReturnButton;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +53,32 @@ public class MainActivity extends Activity implements
         initView();
         initViewPage();
         initEvent();
+
+
+        SimpleAdapter adapter = new SimpleAdapter(
+                this,getData(),R.layout.school_vlist,
+                new String[]{"title","price","newPrice","info","img"},
+                new int[]{R.id.title,R.id.price,R.id.newPrice,R.id.info,R.id.img}
+        );
+        System.out.println("sdsd"+adapter);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //通过view获取其内部的组件，进而进行操作
+                String title = (String) ((TextView)view.findViewById(R.id.title)).getText();
+                String price= (String) ((TextView)view.findViewById(R.id.price)).getText();
+                String info = (String) ((TextView)view.findViewById(R.id.info)).getText();
+                ImageView img=(ImageView)view.findViewById(R.id.img);
+                //大多数情况下，position和id相同，并且都从0开始
+                String showText = "点击第" + position + "项，标题内容为：" + title+"，价格是："+price+"信息是"+info + "，ID为：" + id;
+               // Toast.makeText(MainActivity.this, showText, Toast.LENGTH_LONG).show();
+                Intent intent3 = new Intent(MainActivity.this,School.class) ;
+                startActivity(intent3);
+                finish();
+
+            }
+        });
     }
 
     private void initEvent() {
@@ -102,18 +142,70 @@ public class MainActivity extends Activity implements
         mFacetoFaceImg = (ImageButton) findViewById(R.id.id_tab_facetoface_img);
         mOnlineImg= (ImageButton) findViewById(R.id.id_tab_online_img);
         mMyImg = (ImageButton) findViewById(R.id.id_tab_my_img);
-    }
 
+        mReturnButton = (Button)findViewById(R.id.returnback);
+
+    }
+    public void back_to_login(View view) {
+        Intent intent3 = new Intent(MainActivity.this,Login.class) ;
+        startActivity(intent3);
+        finish();
+    }
     /**
      * 初始化ViewPage
      */
+
+    private List<Map<String,Object>> getData(){
+        List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("title", "自行车");
+        map.put("info", "这是自行车的介绍");
+        map.put("price", "原价：12.00");
+        map.put("newPrice", "会员价：11.00");
+        map.put("img",R.drawable.zxc);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "台灯");
+        map.put("info", "这是台灯的介绍");
+        map.put("price", "原价：15.00");
+        map.put("newPrice", "会员价：11.00");
+        map.put("img",R.drawable.td);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "羽毛球拍");
+        map.put("info", "这是羽毛球拍的介绍");
+        map.put("price", "原价：15.00");
+        map.put("newPrice", "会员价：11.00");
+        map.put("img",R.drawable.ymqp);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "网球拍");
+        map.put("info", "这是网球拍的介绍");
+        map.put("price", "原价：8.00");
+        map.put("newPrice", "会员价：6.00");
+        map.put("img",R.drawable.wqp);
+        list.add(map);
+
+        return list;
+    }
     private void initViewPage() {
 
         // 初妈化四个布局
         LayoutInflater mLayoutInflater = LayoutInflater.from(this);
+
+
         View tabfacetoface = mLayoutInflater.inflate(R.layout.tabfacetoface, null);
+
         View tabonline = mLayoutInflater.inflate(R.layout.tabonline, null);
+
         View tabschool = mLayoutInflater.inflate(R.layout.tabschool, null);
+        listView = tabschool.findViewById(R.id.listView);
+
+
         View tabuser = mLayoutInflater.inflate(R.layout.user, null);
 
         mViews.add(tabschool);
@@ -162,6 +254,7 @@ public class MainActivity extends Activity implements
         switch (arg0.getId()) {
             case R.id.id_tab_school:
                 mViewPager.setCurrentItem(0);
+
                 resetImg();
                 mSchoolImg.setImageResource(R.drawable.school_pressed);
                 break;
